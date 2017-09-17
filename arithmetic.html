@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>arithmetic</title>
+    <style media="screen">
+
+      #question {
+        font-size: 42px;
+        text-align: center;
+        background: none;
+      }
+
+      #answer {
+        font-size: 28px;
+        border: 2px solid #aaa;
+        padding: 5px;
+        text-align: center;
+        width: 100%;
+      }
+
+      #answer:focus {
+        outline: none;
+        border: 2px solid #48f;
+      }
+
+      #feedback {
+        font-size: 22px;
+        text-align: right;
+        margin-top: 20px;
+      }
+
+      .on {
+        border: 2px solid #48f;
+        background: #48f;
+        color: #fff;
+      }
+
+      .off {
+        border: 2px solid #888;
+        background: none;
+        color: #888;
+      }
+
+      .restart {
+        float: right;
+        border: 2px solid #f87;
+        background: #f87;
+        color: #fff;
+      }
+
+      .restart:hover {
+        background: none;
+        color: #f87;
+      }
+
+      .progressbar {
+        background: #48f;
+        width: 0%;
+        height: 4px;
+        transition: all 0.4s ease-in-out;
+      }
+
+      .progressbarback {
+        background: #ddd;
+        width: 100%;
+        height: 4px;
+        position: fixed;
+        z-index: -1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="progressbarback"></div>
+    <div class="progressbar"></div>
+    <a class="btn" href="index.html">&lt;</a>
+    <div class="container">
+      <button type="button" class="btn on">+</button>
+      <button type="button" class="btn on">-</button>
+      <button type="button" class="btn on">×</button>
+      <button type="button" class="btn on">÷</button>
+      <button type="button" class="btn restart">restart</button>
+      <div class="jumbotron" id="question"></div>
+      <input type="text" placeholder="answer" id="answer">
+      <div id="feedback"></div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var maxQ = 5;
+
+    // record score
+    var count = 0;
+    var score = 0;
+
+    // set operation list
+    var opList = ['+', '-', '×', '÷'];
+    $('.btn').click(function() {
+      if ($(this).hasClass('on')) {
+        $(this).addClass('off');
+        $(this).removeClass('on');
+        opList.splice(opList.indexOf($(this).text()),1);
+      }
+      else if ($(this).hasClass('off')) {
+        $(this).addClass('on');
+        $(this).removeClass('off');
+        opList.push($(this).text());
+      }
+      else if ($(this).hasClass('restart')) restart();
+
+      if (opList.length == 0) $('#question').text('Select at least one operator');
+      else if (count < maxQ) q = newQ();
+      else if (count == maxQ) showResult();
+    })
+
+    // return random integer between low and high (inclusive)
+    function random(low,high) { return Math.floor((Math.random() * (high-low+1)) + low); }
+
+    // new question (returns evaluated answer)
+    function newQ() {
+      var op = random(0,opList.length-1);
+      var n2 = random(2,30);
+      var n1 = random(2,30);
+
+      if (opList[op] == '×' && n1 > 10 && n2 > 10) n2 = random(2,10);
+      else if (opList[op] == '÷') n1 = n2 * random(2,20);
+
+      $('#question').text(n1 + ' ' + opList[op] + ' ' + n2 + ' = ');
+      switch (opList[op]) {
+        case '+':
+          return n1 + n2;
+          break;
+        case '-':
+          return n1 - n2;
+          break;
+        case '×':
+          return n1 * n2;
+          break;
+        case '÷':
+          return n1 / n2;
+          break;
+        default:
+          return 0;
+      }
+    }
+
+    // press ENTER KEY
+    $('#answer').keyup(function(event){
+      if(event.keyCode == 13 && opList.length > 0 && ($('#answer').val() != '' || count==maxQ)){
+        count++;
+        $('.progressbar').css('width',count/maxQ*100 + '%');
+        var a = $('#answer').val();
+        if (a == q) {
+          score++;
+          $('#feedback').append($('#question').text() + a + ' <span style="color:#0a8">✓</span><br>')
+        } else {
+          $('#feedback').append($('#question').text() + '<strong>' + q + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+        }
+
+        $('#answer').val('');
+        if (count < maxQ) {
+          q = newQ();
+        } else if (count == maxQ){
+          showResult();
+          $('#answer').attr('placeholder', 'press [enter] to restart');
+          $('#answer').val('');
+        } else {
+          restart();
+          q = newQ();
+        }
+      }
+    })
+
+    // show result
+    function showResult() { $('#question').text('score: ' + score + '/' + maxQ); }
+
+    // restart
+    function restart() {
+      count = 0;
+      score = 0;
+      $('#feedback').text('');
+      $('#answer').attr('placeholder', 'answer');
+      $('.progressbar').css('width',0);
+      $('#answer').focus();
+    }
+
+    // ask first question
+    var q = newQ();
+
+    // focus on answer input
+    $('#answer').focus();
+
+
+
+  </script>
+</html>
