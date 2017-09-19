@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Memory</title>
+    <style media="screen">
+      #showWords {
+        font-size: 28px;
+        width: 200px;
+        margin: 0 auto 20px auto;
+        transform: translateX(-31px);
+      }
+
+      .numbering {
+        width: 50px;
+        text-align: right;
+        display: inline-block;
+        margin-right: 12px;
+      }
+
+      #start {
+        width: 100px;
+        transform: translateX(-20px);
+        display: block;
+        margin: 0 auto;
+      }
+
+      #restart {
+        width: 100px;
+        transform: translateX(-20px);
+        display: none;
+        margin: 0 auto;
+      }
+
+      #answer {
+        font-size: 28px;
+        border: 2px solid #aaa;
+        padding: 5px;
+        text-align: center;
+        width: 100%;
+        display: none;
+      }
+
+      #answer:focus {
+        outline: none;
+        border: 2px solid #48f;
+      }
+
+      .progressbar {
+        background: #48f;
+        width: 0%;
+        height: 4px;
+        transition: all 0.4s ease-in-out;
+      }
+
+      .progressbarback {
+        background: #ddd;
+        width: 100%;
+        height: 4px;
+        position: fixed;
+        z-index: -1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="progressbarback"></div>
+    <div class="progressbar"></div>
+    <a class="btn" href="index.html">&lt;</a>
+    <div class="container">
+      <div id="showWords"></div>
+      <button type="button" class="btn btn-primary" id="start">Start</button>
+      <input type="text" placeholder="answer" id="answer">
+      <div id="feedback"></div>
+      <button type="button" class="btn btn-primary" id="restart">Restart</button>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var maxWords = 10;
+    var words = [
+      'apple', 'banana', 'box', 'gate', 'brick', 'bee', 'paper', 'rock',
+      'mouse', 'laptop', 'eyes', 'glasses', 'cat', 'dog', 'watch',
+      'axe', 'laser', 'triangle', 'popcorn', 'book', 'phone', 'light',
+      'car', 'balloon'
+    ];
+
+    var used = [];
+    var count = 0;
+    var score = 0;
+
+    function randomWord() {
+      var word;
+      do {
+        word = words[Math.floor((Math.random() * words.length))];
+      } while (used.indexOf(word) !== -1);
+      used.push(word);
+      return word;
+    }
+
+    function genWords() {
+      for (var i=1; i<=maxWords; i++) {
+        $('#showWords').append('<span class="numbering">' + i + '.</span>' + randomWord() + '<br>')
+      }
+    }
+
+    $('#start').click(function() {
+      newQ();
+      $('#start').css('display', 'none');
+      $('#answer').css('display', 'block');
+      $('#answer').focus();
+    })
+
+    $('#restart').click(function() {
+      count = 0;
+      score = 0;
+      $('#feedback').text('');
+      used = [];
+      $('#showWords').text('');
+      genWords();
+      $('#restart').css('display', 'none');
+      $('#start').css('display', 'block');
+      $('.progressbar').css('width','0%');
+    })
+
+    function newQ() {
+      $('#showWords').text((count+1) + '.');
+    }
+
+    // ENTER key press
+    $('#answer').keyup(function(event){
+      if (event.keyCode==13 && $('#answer').val() != '') {
+        $('.progressbar').css('width',(count+1)/maxWords*100 + '%');
+        var a = $('#answer').val();
+        if (a == used[count]) {
+          score++;
+          $('#feedback').append($('#showWords').text() + ' ' + a + ' <span style="color:#0a8">✓</span><br>')
+        } else {
+          $('#feedback').append($('#showWords').text() + ' <strong>' + used[count] + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+        }
+        if (count+1 < maxWords) {
+          count++;
+          newQ();
+        } else {
+          $('#showWords').text('score: ' + score + '/' + maxWords);
+          $('#answer').css('display', 'none');
+          $('#restart').css('display', 'block');
+        }
+        $('#answer').val('');
+      }
+    })
+
+    genWords();
+
+
+
+  </script>
+</html>
