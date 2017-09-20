@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Sequence</title>
+    <style media="screen">
+      #question {
+        font-size: 42px;
+        text-align: center;
+        background: none;
+      }
+
+      #answer {
+        font-size: 28px;
+        border: 2px solid #aaa;
+        padding: 5px;
+        text-align: center;
+        width: 100%;
+      }
+
+      #answer:focus {
+        outline: none;
+        border: 2px solid #48f;
+      }
+
+      #feedback {
+        font-size: 22px;
+        text-align: right;
+        margin-top: 20px;
+      }
+
+      .progressbar {
+        background: #48f;
+        width: 0%;
+        height: 4px;
+        transition: all 0.4s ease-in-out;
+      }
+
+      .progressbarback {
+        background: #ddd;
+        width: 100%;
+        height: 4px;
+        position: fixed;
+        z-index: -1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="progressbarback"></div>
+    <div class="progressbar"></div>
+    <a class="btn" href="index.html">&lt;</a>
+    <div class="container">
+      <div class="jumbotron" id="question"></div>
+      <input type="text" placeholder="answer" id="answer">
+      <div id="feedback"></div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var count = 0;
+    var score = 0;
+    var maxQ = 5;
+    var seqMaxN = 4;
+    var seq;
+
+    // return random integer between low and high (inclusive)
+    function random(low,high) { return Math.floor((Math.random() * (high-low+1)) + low); }
+
+    // gen seq
+    function genSeq(mode) {
+      var a = random(-5,5);
+      switch (mode) {
+        case 1:
+          for (var i=0; i<seqMaxN; i++) {
+            seq.push(seq[seq.length-1]+a)
+          }
+          break;
+        case 2:
+          for (var i=0; i<seqMaxN; i++) {
+            seq.push(seq[seq.length-1]*a)
+          }
+          break;
+        case 3:
+        case 4:
+          var b = random(-4,4);
+          for (var i=0; i<seqMaxN; i++) {
+            seq.push(seq[seq.length-1]*a+b)
+          }
+          break;
+        default:
+      }
+    }
+
+    function seqString() {
+      var s = "";
+      for (var i=0; i<seqMaxN; i++) {
+        s = s + seq[i] + ", ";
+      }
+      return s;
+    }
+
+    function newQ() {
+      var mode = random(1,4);
+      seq = [random(-10,10)];
+      genSeq(mode);
+      $('#question').text(seqString() + "___");
+      return seq[seq.length-1];
+    }
+    var ans = newQ();
+
+    $('#answer').keyup(function(event) {
+      if (event.keyCode == 13 && ($('#answer').val() != '' || count == maxQ)) {
+        count++;
+        $('.progressbar').css('width',count/maxQ*100 + '%');
+        var answerInput = $('#answer').val();
+        if (answerInput == ans) {
+          score++;
+          $('#feedback').append(seqString() + '<strong>' + ans + '</strong>' + ' <span style="color:#0a8">✓</span><br>')
+        } else {
+          $('#feedback').append(seqString() + '<strong>' + ans + '</strong>' + ' ≠ ' + answerInput +  ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+        }
+        $('#answer').val('');
+        if (count < maxQ) {
+          ans = newQ();
+        } else if (count == maxQ){
+          showResult();
+          $('#answer').attr('placeholder', 'press [enter] to restart');
+          $('#answer').val('');
+        } else {
+          restart();
+          ans = newQ();
+        }
+      }
+    })
+
+    // show result
+    function showResult() { $('#question').text('score: ' + score + '/' + maxQ); }
+
+    // restart
+    function restart() {
+      count = 0;
+      score = 0;
+      $('#feedback').text('');
+      $('#answer').attr('placeholder', 'answer');
+      $('.progressbar').css('width',0);
+      $('#answer').focus();
+    }
+
+  </script>
+</html>
