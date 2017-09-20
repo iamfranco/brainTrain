@@ -5,47 +5,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Sequence</title>
+    <link rel="stylesheet" href="styles/components.css">
     <style media="screen">
-      #question {
-        font-size: 42px;
-        text-align: center;
-        background: none;
+      .small {
+        font-size: 18px;
       }
-
-      #answer {
-        font-size: 28px;
-        border: 2px solid #aaa;
-        padding: 5px;
-        text-align: center;
-        width: 100%;
-      }
-
-      #answer:focus {
-        outline: none;
-        border: 2px solid #48f;
-      }
-
-      #feedback {
-        font-size: 22px;
-        text-align: right;
-        margin-top: 20px;
-      }
-
-      .progressbar {
-        background: #48f;
-        width: 0%;
-        height: 4px;
-        transition: all 0.4s ease-in-out;
-      }
-
-      .progressbarback {
-        background: #ddd;
-        width: 100%;
-        height: 4px;
-        position: fixed;
-        z-index: -1;
-      }
-
     </style>
   </head>
   <body>
@@ -53,6 +17,7 @@
     <div class="progressbar"></div>
     <a class="btn" href="index.html">&lt;</a>
     <div class="container">
+      <button type="button" class="btn restart">restart</button>
       <div class="jumbotron" id="question"></div>
       <input type="text" placeholder="answer" id="answer">
       <div id="feedback"></div>
@@ -62,31 +27,59 @@
     var count = 0;
     var score = 0;
     var maxQ = 5;
-    var seqMaxN = 4;
+    var seqMaxN = 5;
     var seq;
+    var explainArray = [];
 
     // return random integer between low and high (inclusive)
     function random(low,high) { return Math.floor((Math.random() * (high-low+1)) + low); }
 
-    // gen seq
+    // 1 or -1
+    function pm() {
+      if (Math.random() > 0.5) return 1;
+      return -1;
+    }
+
+    // format 2 -> +2
+    function pSign(a) {
+      if (a>0) return '+ ' + a;
+      return '- ' + (-a);
+    }
+
+    // format -2 -> (-2)
+    function mBracket(a) {
+      if (a<0) return '(' + a + ')';
+      return a;
+    }
+
+    $('.btn').click(function() {
+      if ($(this).hasClass('restart')) {
+        restart();
+        ans = newQ();
+      }
+    })
+
+    // gen sequence
     function genSeq(mode) {
-      var a = random(-5,5);
+      var a = random(1,5) * pm();
       switch (mode) {
-        case 1:
-          for (var i=0; i<seqMaxN; i++) {
-            seq.push(seq[seq.length-1]+a)
-          }
+        case 1: // arithmetic
+          for (var i=0; i<seqMaxN; i++) seq.push(seq[seq.length-1]+a);
+          return [mode, a];
           break;
-        case 2:
-          for (var i=0; i<seqMaxN; i++) {
-            seq.push(seq[seq.length-1]*a)
-          }
+        case 2: // geometric
+          for (var i=0; i<seqMaxN; i++) seq.push(seq[seq.length-1]*a);
+          return [mode, a];
           break;
-        case 3:
-          var b = random(-4,4);
-          for (var i=0; i<seqMaxN; i++) {
-            seq.push(seq[seq.length-1]*a+b)
-          }
+        case 3: // geometric then arithmetic
+          var b = random(-1,4) * pm();
+          for (var i=0; i<seqMaxN; i++) seq.push(seq[seq.length-1]*a+b);
+          return [mode, a, b];
+          break;
+        case 4: // fibonacci
+          seq.push(seq[seq.length-1]);
+          for (var i=1; i<seqMaxN; i++) seq.push(seq[seq.length-1] + seq[seq.length-2]);
+          return [mode, 'Fibonacci'];
           break;
         default:
       }
@@ -94,19 +87,38 @@
 
     function seqString() {
       var s = "";
-      for (var i=0; i<seqMaxN; i++) {
-        s = s + seq[i] + ", ";
-      }
+      for (var i=0; i<seqMaxN; i++) s = s + seq[i] + ", ";
       return s;
     }
 
+    // new question
     function newQ() {
-      var mode = random(1,3);
+      var mode = random(1,4);
       seq = [random(-10,10)];
-      genSeq(mode);
+      explainArray = genSeq(mode);
       $('#question').text(seqString() + "___");
       return seq[seq.length-1];
     }
+
+    // explain answer
+    function explain() {
+      switch (explainArray[0]) {
+        case 1:
+          return "x(n+1) = x(n) " + pSign(explainArray[1]);
+          break;
+        case 2:
+          return "x(n+1) = x(n) × " + mBracket(explainArray[1]);
+          break;
+        case 3:
+          return "x(n+1) = x(n) × " + mBracket(explainArray[1]) + " " + pSign(explainArray[2]);
+          break;
+        case 4:
+          return "Fibonacci";
+          break;
+        default:
+      }
+    }
+
     var ans = newQ();
 
     $('#answer').keyup(function(event) {
@@ -118,7 +130,8 @@
           score++;
           $('#feedback').append(seqString() + '<strong>' + ans + '</strong>' + ' <span style="color:#0a8">✓</span><br>')
         } else {
-          $('#feedback').append(seqString() + '<strong>' + ans + '</strong>' + ' ≠ ' + answerInput +  ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+          $('#feedback').append(seqString() + '<strong>' + ans + '</strong>' + ' ≠ ' + answerInput +' <span style="color:#f65; font-weight: bold">✕</span><br>')
+          $('#feedback').append('<span class="small">' + explain() + '</span> <span style="color:#fff; font-weight: bold">✕</span><br><br>')
         }
         $('#answer').val('');
         if (count < maxQ) {

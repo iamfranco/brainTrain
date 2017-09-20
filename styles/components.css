@@ -1,0 +1,63 @@
+#question {
+  font-size: 42px;
+  text-align: center;
+  background: none;
+}
+
+#answer {
+  font-size: 28px;
+  border: 2px solid #aaa;
+  padding: 5px;
+  text-align: center;
+  width: 100%;
+}
+
+#answer:focus {
+  outline: none;
+  border: 2px solid #48f;
+}
+
+#feedback {
+  font-size: 22px;
+  text-align: right;
+  margin-top: 20px;
+}
+
+.on {
+  border: 2px solid #48f;
+  background: #48f;
+  color: #fff;
+}
+
+.off {
+  border: 2px solid #888;
+  background: none;
+  color: #888;
+}
+
+.restart {
+  float: right;
+  border: 2px solid #f87;
+  background: #f87;
+  color: #fff;
+}
+
+.restart:hover {
+  background: none;
+  color: #f87;
+}
+
+.progressbar {
+  background: #48f;
+  width: 0%;
+  height: 4px;
+  transition: all 0.4s ease-in-out;
+}
+
+.progressbarback {
+  background: #ddd;
+  width: 100%;
+  height: 4px;
+  position: fixed;
+  z-index: -1;
+}
