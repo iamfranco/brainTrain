@@ -5,34 +5,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title></title>
-    <style media="screen">
-      #question {
-        font-size: 42px;
-        text-align: center;
-        background: none;
-      }
-
-      #answer {
-        font-size: 28px;
-        border: 2px solid #aaa;
-        padding: 5px;
-        text-align: center;
-        width: 100%;
-      }
-
-      #answer:focus {
-        outline: none;
-      }
-
-      #feedback {
-        font-size: 22px;
-        text-align: right;
-        margin-top: 20px;
-      }
-
-    </style>
+    <link rel="stylesheet" href="styles/components.css">
   </head>
   <body>
+    <div class="progressbarback"></div>
+    <div class="progressbar"></div>
     <a class="btn" href="index.html">&lt;</a>
     <div class="container">
       <div class="jumbotron" id="question"></div>
@@ -40,4 +17,23 @@
       <div id="feedback"></div>
     </div>
   </body>
+  <script type="text/javascript">
+    var maxQ = 5;
+
+    // new question (returns evaluated answer)
+    function newQ() {
+      
+    }
+
+    function correctMessage(a) {
+      $('#feedback').append($('#question').text() + '=' + a + ' <span style="color:#0a8">✓</span><br>');
+    }
+
+    function incorrectMessage(a,q) {
+      $('#feedback').append($('#question').text() + '=' + '<strong>' + q + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+    }
+
+    function enterCriteria() { return true}
+  </script>
+  <script src="javascript/quiz.js"></script>
 </html>

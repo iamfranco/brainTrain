@@ -25,10 +25,6 @@
   <script type="text/javascript">
     var maxQ = 5;
 
-    // record score
-    var count = 0;
-    var score = 0;
-
     // set operation list
     var opList = ['+', '-', '×', '÷'];
     $('.btn').click(function() {
@@ -49,9 +45,6 @@
       else if (count == maxQ) showResult();
     })
 
-    // return random integer between low and high (inclusive)
-    function random(low,high) { return Math.floor((Math.random() * (high-low+1)) + low); }
-
     // new question (returns evaluated answer)
     function newQ() {
       var op = random(0,opList.length-1);
@@ -63,70 +56,25 @@
 
       $('#question').text(n1 + ' ' + opList[op] + ' ' + n2 + ' = ');
       switch (opList[op]) {
-        case '+':
-          return n1 + n2;
-          break;
-        case '-':
-          return n1 - n2;
-          break;
-        case '×':
-          return n1 * n2;
-          break;
-        case '÷':
-          return n1 / n2;
-          break;
-        default:
-          return 0;
+        case '+': return n1 + n2;
+        case '-': return n1 - n2;
+        case '×': return n1 * n2;
+        case '÷': return n1 / n2;
+        default:  return 0;
       }
     }
 
-    // press ENTER KEY
-    $('#answer').keyup(function(event){
-      if(event.keyCode == 13 && opList.length > 0 && ($('#answer').val() != '' || count==maxQ)){
-        count++;
-        $('.progressbar').css('width',count/maxQ*100 + '%');
-        var a = $('#answer').val();
-        if (a == q) {
-          score++;
-          $('#feedback').append($('#question').text() + a + ' <span style="color:#0a8">✓</span><br>')
-        } else {
-          $('#feedback').append($('#question').text() + '<strong>' + q + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
-        }
-
-        $('#answer').val('');
-        if (count < maxQ) {
-          q = newQ();
-        } else if (count == maxQ){
-          showResult();
-          $('#answer').attr('placeholder', 'press [enter] to restart');
-          $('#answer').val('');
-        } else {
-          restart();
-          q = newQ();
-        }
-      }
-    })
-
-    // show result
-    function showResult() { $('#question').text('score: ' + score + '/' + maxQ); }
-
-    // restart
-    function restart() {
-      count = 0;
-      score = 0;
-      $('#feedback').text('');
-      $('#answer').attr('placeholder', 'answer');
-      $('.progressbar').css('width',0);
-      $('#answer').focus();
+    function correctMessage(a) {
+      $('#feedback').append($('#question').text() + a + ' <span style="color:#0a8">✓</span><br>')
     }
 
-    // ask first question
-    var q = newQ();
+    function incorrectMessage(a,q) {
+      $('#feedback').append($('#question').text() + '<strong>' + q + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+    }
 
-    // focus on answer input
-    $('#answer').focus();
-
+    function enterCriteria() { return opList.length > 0}
 
 
   </script>
+  <script src="javascript/quiz.js"></script>
 </html>
