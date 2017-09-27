@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Roman Numerals</title>
+    <link rel="stylesheet" href="styles/components.css">
+  </head>
+  <body>
+    <div class="progressbarback"></div>
+    <div class="progressbar"></div>
+    <a class="btn" href="index.html">&lt;</a>
+    <div class="container">
+      <div class="jumbotron" id="question"></div>
+      <input type="text" placeholder="answer" id="answer" style="text-transform:uppercase">
+      <div id="keys" style="float: left"></div>
+      <div id="feedback"></div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var maxQ = 5;
+
+    var roman = [
+      ['I', 'V'],
+      ['X', 'L'],
+      ['C', 'D'],
+      ['M']
+    ]
+
+    // populate hint area (eg I = 1, V = 5, X = 10, ...)
+    for (var r=0; r<roman.length; r++) {
+      for (var c=0; c<roman[r].length; c++) {
+        $('#keys').append(
+          function(){
+            var str;
+            if (c==0) str='1';
+            else str='5';
+            for (var i=0; i<r; i++) {str = str+'0'}
+            return roman[r][c] + ' = ' + str + '<br>';
+          }
+        )
+      }
+    }
+
+    function digitToRoman(d,i) {
+      switch (parseInt(d)) {
+        case 1: return roman[i][0];
+        case 2: return roman[i][0]+roman[i][0];
+        case 3: return roman[i][0]+roman[i][0]+roman[i][0];
+        case 4: return roman[i][0]+roman[i][1];
+        case 5: return roman[i][1];
+        case 6: return roman[i][1]+roman[i][0];
+        case 7: return roman[i][1]+roman[i][0]+roman[i][0];
+        case 8: return roman[i][1]+roman[i][0]+roman[i][0]+roman[i][0];
+        case 9: return roman[i][0]+roman[i+1][0];
+        default:  return '';
+      }
+    }
+
+    function numToRoman(n) {
+      var arr = n.toString().split('');
+      var r = '';
+      for (var i=0; i<arr.length; i++) {
+        r = r + digitToRoman(arr[i],arr.length-i-1);
+      }
+      return r;
+    }
+
+    function newQ() {
+      var n = random(1,100); // max limit 3999
+      $('#question').text(n);
+      return numToRoman(n);
+    }
+
+    function correctMessage(a) {
+      $('#feedback').append($('#question').text() + '=' + a + ' <span style="color:#0a8">✓</span><br>');
+    }
+
+    function incorrectMessage(a,q) {
+      $('#feedback').append($('#question').text() + '=' + '<strong>' + q + '</strong> ≠ ' + a + ' <span style="color:#f65; font-weight: bold">✕</span><br>')
+    }
+
+    function enterCriteria() {return true;}
+  </script>
+  <script src="javascript/quiz.js"></script>
+</html>
