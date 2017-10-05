@@ -24,6 +24,7 @@ $('#answer').keyup(function(event){
       showResult();
       $('#answer').attr('placeholder', 'press [enter] to restart');
       $('#answer').val('');
+      if (score == maxQ) init();
     } else {
       restart();
       q = newQ();
@@ -49,3 +50,6 @@ var q = newQ();
 
 // focus on answer input
 $('#answer').focus();
+
+// launch animation for firework
+animate();
