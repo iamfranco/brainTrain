@@ -84,6 +84,7 @@
       <button type="button" class="btn btn-primary" id="restart">Restart</button>
     </div>
   </body>
+  <script src="javascript/firework.js"></script>
   <script type="text/javascript">
     var maxWords = 10;
     var words = [
@@ -150,6 +151,7 @@
           count++;
           newQ();
         } else {
+          if (score == maxWords) init();
           $('#showWords').text('score: ' + score + '/' + maxWords);
           $('#answer').css('display', 'none');
           $('#restart').css('display', 'block');
@@ -160,6 +162,8 @@
 
     genWords();
 
+    // launch animation for firework
+    animate();
+
   </script>
-  <script src="javascript/firework.js"></script>
 </html>
