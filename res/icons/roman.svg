@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 300 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1,0,0,1,-930,0)">
+        <g id="roman" transform="matrix(1.5,0,0,1,930,0)">
+            <rect x="0" y="0" width="200" height="200" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="0" y="0" width="200" height="200"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g>
+                    <g transform="matrix(0.666667,-0,-0,1,0,0)">
+                        <use xlink:href="#_Image2" x="0" y="0" width="300px" height="200px"/>
+                    </g>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-296.126,1.3388)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">X<tspan x="514.456px " y="160.854px ">V</tspan>II</text>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-296.126,-96.8706)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">CI<tspan x="523.965px " y="160.854px ">X</tspan></text>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-236.126,1.3388)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">XLI</text>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-236.126,-96.8706)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">XII</text>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-182.793,1.3388)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">IV</text>
+                </g>
+                <g transform="matrix(0.666667,0,0,1,-182.793,-96.8706)">
+                    <text x="494.189px" y="160.854px" style="font-family:'Roboto-Regular', 'Roboto';font-size:31.978px;fill:white;fill-opacity:0.501961;">III</text>
+                </g>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <image id="_Image2" width="300px" height="200px" xlink:href="data:image/jpeg;base64,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"/>
+    </defs>
+</svg>

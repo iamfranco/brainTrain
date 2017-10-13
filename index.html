@@ -20,12 +20,37 @@
         font-size: 36px;
         text-align: center;
         line-height: 36px;
-        color: #000;
+        color: #fff;
+        transition: all 0.2s ease-in;
+      }
+
+      .arithmetic {
+        background: url('res/icons/arithmetic.svg');
+        background-size: cover;
+        background-position: center;
+      }
+
+      .memory {
+        background: url('res/icons/memory.svg');
+        background-size: cover;
+        background-position: center;
+      }
+
+      .sequence {
+        background: url('res/icons/sequence.svg');
+        background-size: cover;
+        background-position: center;
+      }
+
+      .roman {
+        background: url('res/icons/roman.svg');
+        background-size: cover;
+        background-position: center;
       }
 
       .big-button:hover {
-        transition: all 0.1s ease-in;
-        background: #aaa;
+        /*background: #aaa;*/
+        transform: translateY(-10px);
       }
 
       a:hover {
@@ -42,16 +67,16 @@
 
       <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-3">
-          <a href="arithmetic.html"><div class="jumbotron big-button">arithmetic</div></a>
+          <a href="arithmetic.html"><div class="jumbotron big-button arithmetic">arithmetic</div></a>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-3">
-          <a href="memory.html"><div class="jumbotron big-button">memory</div></a>
+          <a href="memory.html"><div class="jumbotron big-button memory">memory</div></a>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-3">
-          <a href="sequence.html"><div class="jumbotron big-button">sequence</div></a>
+          <a href="sequence.html"><div class="jumbotron big-button sequence">sequence</div></a>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-3">
-          <a href="roman.html"><div class="jumbotron big-button">Roman no.</div></a>
+          <a href="roman.html"><div class="jumbotron big-button roman">Roman no.</div></a>
         </div>
       </div>
     </div>
